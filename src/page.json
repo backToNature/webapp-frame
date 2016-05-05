@@ -1,0 +1,18 @@
+{
+    "pagesA": {
+        "title": "测试站A",
+        "modules": {
+            "main": ["contentA-2"],
+            "footer": ["footerA-3"]
+        },
+        "remove": false
+    },
+    "pagesB": {
+        "title": "测试站B",
+        "modules": {
+            "main": ["contentB-2"],
+            "footer": ["footerB-3"]
+        },
+        "remove": true
+    }
+}
