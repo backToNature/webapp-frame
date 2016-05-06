@@ -2,8 +2,8 @@
     "pagesA": {
         "title": "测试站A",
         "modules": {
-            "main": ["contentA-2"],
-            "footer": ["footerA-3"]
+            "main": ["bottom-tap-1"],
+            "footer": ["bottom-tap-2"]
         },
         "remove": false
     },
