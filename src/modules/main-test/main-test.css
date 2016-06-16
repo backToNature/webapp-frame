@@ -1,0 +1,9 @@
+.module-main-test {
+
+}
+
+.module-main-test .status-0 {
+    width: 100%;
+    height: 300px;
+    background: red;
+}
