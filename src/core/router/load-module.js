@@ -1,9 +1,13 @@
 define(function(require, exports, module) {
     var $$data = require('../util/data-center'),
-        debug = $.cookie()['debug_cookie'];
+        debug = $.cookie()['debug_cookie'],
+        $$module = require('./module'),
+        $$api = require('../api/api'),
+        modules = {};
 
-    var loadModule = function (pageName) {
-        var pageDetail = $$data.get('pageConfig:' + pageName), temp,
+    var loadModule = function (pageName, data) {
+        var pageDetail = $$data.get('pageConfig:' + pageName),
+            $currentWrapper = pageDetail.level === 1 ? $('.doc.level-1 .main') : $('.doc.level-2.active .main'),
             moduleList = _.map(pageDetail.modules, function (item) {
                 return item.split('.')[0];
             }),
@@ -22,8 +26,13 @@ define(function(require, exports, module) {
                 return;
             }
 
+            var temp = newModuleList.shift(),
+            moduleName = _.last(temp.split('/')).replace('.js', ''),
+            $module = $currentWrapper.find('div[node-type="module"]').filter('.module-' + moduleName);
+
             if (debug === 'true') {
-                seajs.use(newModuleList.shift(), function () {
+                seajs.use([temp.replace('.js', '.css'), temp], function () {
+                    $$module.set(moduleName, window.mdevApp.exports(data, $module, $$api, $$module.get('/')));
                     if (newModuleList.length) {
                         request();
                     } else {
@@ -31,8 +40,8 @@ define(function(require, exports, module) {
                     }
                 });
             } else {
-                temp = newModuleList.shift();
                 $.getScript('.' + temp.split('.')[temp.split('.').length - 2] + '.min.js', function () {
+                    $$module.set(moduleName, window.mdevApp.exports(data, $module, $$api, $$module.get('/')));
                     if (newModuleList.length) {
                         request();
                     } else {

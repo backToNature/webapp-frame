@@ -4,5 +4,5 @@ define(function(require, exports, module) {
     console.log($$data.get('pageConfig'));
     var $$router = require('./router/router');
 
-    $$router.router('index');
+    $$router.go('index');
 });
