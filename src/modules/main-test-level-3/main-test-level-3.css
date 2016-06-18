@@ -1,0 +1,11 @@
+.module-main-test-level-3 {
+    width: 100%;
+    height: 800px;
+    background: green;
+    color: #fff;
+}
+
+.module-main-test-level-3 button {
+    width: 100%;
+    height: 200px;
+}
