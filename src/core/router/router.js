@@ -8,7 +8,7 @@ define(function(require, exports, module) {
             }
 
             $$data.set('currentPage', pageName);
-            
+
             // 初始化渲染
             require('./render')(pageName);
             if (!$$api.router) {

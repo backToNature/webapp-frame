@@ -19,6 +19,9 @@ define(function(require, exports, module) {
                 $module = $currentWrapper
                 .find('div[node-type="module"]')
                 .filter('.module-' + moduleName);
+            if (currentPageDetail.level > 1) {
+                $module = $module.length ? $module : $('.doc.level-2 .main').find('div[node-type="module"]').filter('.module-' + moduleName);
+            }
             $module = $module.length ? $module : $(velocityjs.render(tpl, {status: moduleStatus}));
             $module.show();
             $currentWrapper.append($module);
