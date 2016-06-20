@@ -29,7 +29,6 @@ define(function(require, exports, module) {
     });
 
     var firstPageName = $$query.getParams(location.search, 'pageName') || 'index';
-    console.log(firstPageName);
     // 首屏加载
     render(firstPageName, {firstRender: true});
 });

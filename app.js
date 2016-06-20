@@ -1,7 +1,6 @@
 var tool = require('nodejs-tools');
 var path = require('path');
 var fs = require('fs');
-// var sbuilder = require('seajs-builder');
 var extensionDir = path.join(__dirname, '/src/modules');
 
 var util = {
@@ -41,30 +40,20 @@ var buildAllExtension = function (extensionDir) {
     });
 };
 
-
-
-
-if (util.hasArgument('build')) {
-    // fs.readdirSync(path.join(__dirname, '/src/extensions')).forEach(function (item) {
-    //     sbuilder.build('./src/extensions/' + item + '/' + item + '.js', './', './src/extensions/'+ item + '/' + item + '.min.js');
-    // });
-    // sbuilder.build('./src/core/core.js', './', './src/core/core.min.js');
-} else {
-    buildAllExtension(extensionDir);
-    var watcher = {
-        start: function (extensionDir) {
-            fs.readdirSync(extensionDir).forEach(function (item) {
-                if (path.extname(item) === '') {
-                    fs.watch(path.join(extensionDir, item), function (event, filename) {
-                        if (path.extname(filename) === '.html') {
-                            htmlToJs(path.join(extensionDir, item, filename));
-                        }
-                    });
-                }
-            });
-        }
-    };
-    watcher.start(extensionDir);
-    console.log('监听启动');
-}
-
+buildAllExtension(extensionDir);
+var watcher = {
+    start: function (extensionDir) {
+        fs.readdirSync(extensionDir).forEach(function (item) {
+            if (path.extname(item) === '') {
+                fs.watch(path.join(extensionDir, item), function (event, filename) {
+                    if (path.extname(filename) === '.html') {
+                        htmlToJs(path.join(extensionDir, item, filename));
+                        require('./appendTpl')(extensionDir);
+                    }
+                });
+            }
+        });
+    }
+};
+watcher.start(extensionDir);
+console.log('监听启动');
