@@ -11,7 +11,19 @@ define(function(require, exports, module) {
             $pre = prePage ? prePageDetail.level === 1 ? $('.doc.level-1') : $('.doc.level-2.active') : undefined;
         if (!prePage) {
             // 首次渲染
-
+            if (currentPageDetail.level > 1) {
+                $('.doc.level-1')
+                .css('transform', 'translate3d(-'+$(window).width() * 0.32+'px,0,0)')
+                .hide();
+                $current
+                .css('transform', 'translate3d(0,0,0)')
+                .css('position', 'static');
+                if (currentPageDetail.level === 3) {
+                    $('.doc.level-2').not('.active')
+                    .css('position', 'static')
+                    .css('transform', 'translate3d(-'+$(window).width() * 0.32+'px,0,0)').hide();
+                }
+            }
         } else {
             if (prePageDetail.level === 1) {
                 // 1级页面跳1级页面

@@ -27,8 +27,22 @@ define(function(require, exports, module) {
         });
 
         var moduleReady = function () {
-            $('.main').css('opacity', 1);
-            require('./page-animate')(pageName);
+            if ($('.global_loading').css('display') === 'block') {
+                window.setTimeout(function () {
+                    $('.main').transition({
+                        opacity: 1,
+                        duration: 500,
+                        easing: 'in-out',
+                        complete: function() {
+                            $('.global_loading').hide();
+                            require('./page-animate')(pageName);
+                        }
+                    });
+                }, 300);
+            } else {
+                $('.main').css('opacity', 1);
+                require('./page-animate')(pageName);
+            }
         };
 
         // 如果页面所有模块已经加载过了，直接算完成
