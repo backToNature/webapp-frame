@@ -14,9 +14,16 @@
 }
 .module-main-test .status-0 .jump-2 {
     width: 100%;
-    height: 100%;
+    height: 150px;
     font-size: 32px;
     color: #fff;
     background: #54d09f;
     border: none;
+}
+
+.module-main-test .status-0 .bg-pic {
+    width: 211px;
+    height: 150px;
+    background: url('./imgs/demo.jpg') no-repeat;
+    background-size: 100%; 
 }

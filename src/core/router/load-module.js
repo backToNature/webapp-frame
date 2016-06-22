@@ -52,53 +52,26 @@ define(function(require, exports, module) {
             return;
         }
 
-        if (debug === 'true') {
-            newModuleList.forEach(function (item) {
-                var moduleName = _.last(item.split('/')).replace('.js', ''),
-                $module = $currentWrapper.find('div[node-type="module"]').filter('.module-' + moduleName);
-                seajs.use([item.replace('.js', '.css'), item], function () {
-                    $$module.set(moduleName, window.mdevApp.exports(data, $module, api, $$module.get('/')));
-                    num ++;
-                    if (num === newModuleList.length) {
-                        // 所有插件加载完成
-                        moduleReady();
-                    }
-                });
-            });
-        }
-
-        var request = function () {
-            if (!newModuleList.length) { 
-                // $(window).trigger('pageLoad', [pageName]);
-                return;
-            }
-
-            var temp = newModuleList.shift(),
-            moduleName = _.last(temp.split('/')).replace('.js', ''),
+        newModuleList.forEach(function (item) {
+            var moduleName = _.last(item.split('/')).replace('.js', ''),
             $module = $currentWrapper.find('div[node-type="module"]').filter('.module-' + moduleName);
-
+            var done = function () {
+                console.log(moduleName, window.mdevApp.exports);
+                $$module.set(moduleName, window.mdevApp.exports(data, $module, api, $$module.get('/')));
+                num ++;
+                if (num === newModuleList.length) {
+                    // 所有插件加载完成
+                    moduleReady();
+                }
+            };
             if (debug === 'true') {
-                seajs.use([temp.replace('.js', '.css'), temp], function () {
-                    $$module.set(moduleName, window.mdevApp.exports(data, $module, api, $$module.get('/')));
-                    if (newModuleList.length) {
-                        request();
-                    } else {
-                        // $(window).trigger('pageLoad', [pageName]);
-                    }
-                });
+                seajs.use([item.replace('.js', '.css'), item], done);
             } else {
-                $.getScript('.' + temp.split('.')[temp.split('.').length - 2] + '.min.js', function () {
-                    $$module.set(moduleName, window.mdevApp.exports(data, $module, api, $$module.get('/')));
-                    if (newModuleList.length) {
-                        request();
-                    } else {
-                        // $(window).trigger('pageLoad', [pageName]);
-                    }
-                });
+                $.when($.loadCss(item.replace('.js', '.css')), $.getScript(item.replace('.js', '.min.js')))
+                .done(done);
             }
-        };
+        });
 
-        // request();
     };
     module.exports = loadModule;
 });

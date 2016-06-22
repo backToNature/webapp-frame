@@ -110,3 +110,21 @@
         return !$.cookie(key);
     };
 }));
+
+(function ($) {
+    var dtd = $.Deferred();
+    $.loadCss = function (url, callback) {
+        var container = document.getElementsByTagName("head")[0];
+        var addStyle = document.createElement("link");
+        addStyle.rel = "stylesheet";
+        addStyle.type = "text/css";
+        addStyle.media = "screen";
+        addStyle.onload = function () {
+            dtd.resolve();
+            callback && callback.call(this);
+        };
+        addStyle.href = url;
+        container.appendChild(addStyle);
+        return dtd;
+    };
+}(jQuery));
